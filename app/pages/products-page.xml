@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="onNavigatingTo" class="bg-gray-100">
+    <ActionBar title="Products" class="bg-blue-600 text-white">
+        <ActionItem tap="onAddProduct" ios.position="right" android.position="actionBar">
+            <Label text="+" class="text-2xl font-bold p-2" />
+        </ActionItem>
+    </ActionBar>
+
+    <GridLayout rows="auto, *">
+        <!-- Search Bar -->
+        <SearchBar row="0" hint="Search products..." text="{{ searchQuery }}" 
+                  class="bg-white m-2 rounded-lg" />
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator row="1" busy="{{ isLoading }}" class="m-4" />
+
+        <!-- Products List -->
+        <ListView row="1" items="{{ products }}" class="list-group" visibility="{{ isLoading ? 'collapse' : 'visible' }}">
+            <ListView.itemTemplate>
+                <GridLayout columns="auto, *" rows="auto, auto" class="bg-white m-2 p-4 rounded-lg shadow">
+                    <GridLayout row="0" col="0" rowSpan="2" width="60" height="60">
+                        <!-- Image Loading Indicator -->
+                        <ActivityIndicator busy="{{ $parents['ListView'].isImageLoading(image) }}" width="20" height="20" />
+                        <!-- Product Image -->
+                        <Image src="{{ image }}" 
+                               width="60" height="60" 
+                               class="rounded-lg" 
+                               loaded="{{ $parents['ListView'].onImageLoaded }}"
+                               loadMode="async" />
+                    </GridLayout>
+                    <StackLayout row="0" col="1" class="ml-4">
+                        <Label text="{{ product_name }}" class="text-lg font-semibold" />
+                        <Label text="{{ product_type }}" class="text-sm text-gray-600" />
+                    </StackLayout>
+                    <StackLayout row="1" col="1" class="ml-4">
+                        <Label text="{{ 'Price: $' + price }}" class="text-base text-blue-600" />
+                        <Label text="{{ 'Tax: ' + tax + '%' }}" class="text-sm text-gray-500" />
+                    </StackLayout>
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>
